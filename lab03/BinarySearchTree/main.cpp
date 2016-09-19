@@ -199,7 +199,7 @@ void BinarySearchTree::DisplayNode(Node* node)
 int main()
 {
     BinarySearchTree my_tree;
-    const int Lenght = 10;
+    const int Lenght    = 10;
     int numbers[Lenght] = {5,7,5,9,1,8,3,4,15,32};
     for(int i = 0;i < Lenght;i++)
     {
@@ -207,11 +207,9 @@ int main()
     }
     my_tree.DisplayTree();
 
-    Node* search_result = new Node;
-    search_result = my_tree.Search(7);
     cout << endl << "-----------------------";
     cout << endl << "Search result:";
-    my_tree.DisplayNode(search_result);
+    my_tree.DisplayNode(my_tree.Search(7));
     cout << "-----------------------" << endl;
 
     return 0;
