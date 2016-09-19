@@ -5,8 +5,8 @@ using namespace std;
 class Node
 {
     public:
-        string data;
-        Node* next;
+        string data_;
+        Node* next_;
 
         Node();
         Node(string data);
@@ -14,25 +14,25 @@ class Node
 };
 Node::Node()
 {
-    this->data = "";
-    this->next = NULL;
+    this->data_ = "";
+    this->next_ = NULL;
 }
 Node::Node(string data)
 {
-    this->data = data;
-    this->next = NULL;
+    this->data_ = data;
+    this->next_ = NULL;
 }
 Node::~Node()
 {
-    delete(this->next);
+    delete(this->next_);
 }
 
 class LinkedList
 {
     public:
-        Node* head;
-        Node buffer;
-        Node* tail;
+        Node* head_;
+        Node  buffer_;
+        Node* tail_;
 
         LinkedList();
         void Push(string data);
@@ -45,33 +45,33 @@ class LinkedList
 };
 LinkedList::LinkedList()
 {
-    this->head = &buffer;
-    this->buffer.data = "Buffer";
-    this->tail = &buffer;
+    this->head_ = &buffer_;
+    this->buffer_.data_ = "Buffer";
+    this->tail_ = &buffer_;
 }
 void LinkedList::Push(string data)
 {
     Node* new_node = new Node(data);
-    this->tail->next = new_node;
-    this->tail = new_node;
+    this->tail_->next_ = new_node;
+    this->tail_ = new_node;
 }
 
 void LinkedList::Pop()
 {
-    if(this->head != this->tail)
+    if(this->head_ != this->tail_)
     {
-        Node* p1 = this->head;
-        Node* p2 = this->head->next;
+        Node* p1 = this->head_;
+        Node* p2 = this->head_->next_;
 
-        while(p2->next)
+        while(p2->next_)
         {
-            p1 = p1->next;
-            p2 = p2->next;
+            p1 = p1->next_;
+            p2 = p2->next_;
         }
 
         delete(p2);
-        p1->next = NULL;
-        this->tail = p1;
+        p1->next_ = NULL;
+        this->tail_ = p1;
     }
     else
     {
@@ -80,58 +80,58 @@ void LinkedList::Pop()
 }
 void LinkedList::Delete(string data)
 {
-    Node* prev = this->head;
-    Node* p = prev->next;
+    Node* prev = this->head_;
+    Node* p = prev->next_;
     bool found = false;
-    if(p->next)
+    if(p->next_)
     {
-        Node* next = p->next;
+        Node* next = p->next_;
         while(next && !found)
         {
-            if(p->data.compare(data) == 0)
+            if(p->data_.compare(data) == 0)
             {
-                prev->next = next;
+                prev->next_ = next;
                 if(next)
                 {
-                    next = next->next;
+                    next = next->next_;
                 }
                 else
                 {
                     next = NULL;
-                    this->tail = prev;
+                    this->tail_ = prev;
                 }
 
                 found = true;
             }
             if(!found)
             {
-                prev = prev->next;
-                p = p->next;
-                next = next->next;
+                prev = prev->next_;
+                p = p->next_;
+                next = next->next_;
             }
         }
     }
-    if(!found && this->tail->data == data)
+    if(!found && this->tail_->data_ == data)
     {
-        this->tail = prev;
-        prev->next = NULL;
+        this->tail_ = prev;
+        prev->next_ = NULL;
     }
 }
 void LinkedList::EmptyList()
 {
-    while(this->head != this->tail)
+    while(this->head_ != this->tail_)
     {
         Pop();
     }
 }
 void LinkedList::Display()
 {
-    Node* p = this->head;
+    Node* p = this->head_;
 
     while(p)
     {
-        cout << p->data << "->";
-        p = p->next;
+        cout << p->data_ << "->";
+        p = p->next_;
     }
     cout << endl;
 }
