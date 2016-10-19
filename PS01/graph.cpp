@@ -32,9 +32,11 @@ void Edge::Display() {
         cout << " " << name_ << ": ";
     }
     if(!vertices_.empty()) {
+        int i = 0;
         vector<Edge*>::iterator iter;
         for (iter = vertices_.begin(); iter != vertices_.end(); ++iter) {
-            cout << (*iter)->name_ << ", ";
+            cout << (*iter)->name_ << "(" << weights_[i] << ") ";
+            i++;
         }
         cout << endl;
     } else {
@@ -71,7 +73,7 @@ bool Graph::InsertVertex(string vertex) {
         }
     }
     Edge new_vertex(vertex);
-    Edge* my_pointer = &new_vertex;
+    //Edge* my_pointer = &new_vertex;
     edges_.push_back(new_vertex);
 
     return true;
@@ -162,7 +164,7 @@ void Graph::Display() {
         for (iter = edges_.begin(); iter != edges_.end(); iter++) {
             (*iter).Display();
         }
-        cout << endl << "Sorted graph: ";
+        /*cout << endl << "Sorted graph: ";
         for (iter = edges_.begin(); iter != edges_.end(); iter++) {
             if(!(*iter).reachable_)
             {
@@ -179,7 +181,7 @@ void Graph::Display() {
         for (iter2 = sorted_graph.begin(); iter2 != sorted_graph.end(); iter2++) {
             cout << *iter2 << ", ";
         }
-        cout << endl;
+        cout << endl;*/
     } else {
         cout << "Empty graph" << endl;
     }
@@ -203,4 +205,101 @@ void Graph::ToGraphviz() {
     } else {
         cout << "Empty graph" << endl;
     }
+}
+int Graph::GetNumberOfEdges() {
+    return edges_.size();
+}
+Vertex::Vertex(string edge1,string edge2,int weight) {
+    edge1_ = edge1;
+    edge2_ = edge2;
+    weight_ = weight;
+}
+Graph Graph::PrimMST() {
+    Graph MST;
+    if(!edges_.empty()) {
+
+        //MST.InsertVertex(edges_[0].name_);
+        vector<Edge>::iterator iter1;
+        vector<Edge*>::iterator iter2;
+        int w = 0;
+        int e = 0;
+        int i = 0;
+        vector<Vertex*> open;
+        vector<Vertex*> close;
+        int max_weight = 0;
+        int min_weight = 1000;
+        int min_index = 0;
+        for (iter1 = edges_.begin(); iter1 != edges_.end(); iter1++) {
+                w = 0;
+            for (iter2 = (*iter1).vertices_.begin(); iter2 != (*iter1).vertices_.end(); iter2++) {
+                Vertex *new_vertex = new Vertex((*iter1).name_, (*iter2)->name_, edges_[e].weights_[w]);
+                open.push_back(new_vertex);
+                if(edges_[e].weights_[w] > max_weight) {
+                    max_weight = edges_[e].weights_[w];
+                }
+                else if(edges_[e].weights_[w] < min_weight){
+                    min_weight = edges_[e].weights_[w];
+                    min_index = i;
+                }
+                w++;
+                i++;
+            }
+            e++;
+        }
+        MST.InsertVertex(open[min_index]->edge1_);
+        MST.InsertVertex(open[min_index]->edge2_);
+        cout << open[min_index]->edge1_ << ":" << open[min_index]->edge2_ << " " << open[min_index]->weight_ << endl;
+        close.push_back(open[min_index]);
+        open.erase(open.begin()+min_index);
+
+        int index = -1;
+        min_weight = max_weight;
+        vector<Vertex*>::iterator open_iter;
+        vector<Vertex*>::iterator close_iter;
+        i = 0;
+        while(MST.edges_.size() < edges_.size()) {
+                i = 0;
+            for (open_iter = open.begin(); open_iter != open.end(); open_iter++) {
+
+                for (close_iter = close.begin(); close_iter != close.end(); close_iter++) {
+                    cout << (*open_iter)->edge1_ << ":" << (*open_iter)->edge2_ << "(" << (*open_iter)->weight_ << ") ? " <<
+                    (*close_iter)->edge1_ << ":" << (*close_iter)->edge2_  << " " << min_weight << endl;
+                    if(((*open_iter)->weight_ < min_weight) && (((*open_iter)->edge1_ == (*close_iter)->edge1_)
+                                                             || ((*open_iter)->edge1_ == (*close_iter)->edge2_)
+                                                             || ((*open_iter)->edge2_ == (*close_iter)->edge1_)
+                                                             || ((*open_iter)->edge2_ == (*close_iter)->edge2_))) {
+                        cout << "yes" << endl;
+                        min_weight = (*open_iter)->weight_;
+                        index = i;
+                    }
+                }
+                i++;
+            }
+            if(index != -1) {
+                cout << open[index]->edge1_ << endl;
+                MST.InsertVertex(open[index]->edge1_);
+                MST.InsertVertex(open[index]->edge2_);
+                close.push_back(open[index]);
+                open.erase(open.begin() + index);
+                min_weight = max_weight;
+                index = -1;
+            }
+            i++;
+
+        }
+        for (close_iter = close.begin(); close_iter != close.end(); close_iter++) {
+            MST.InsertEdge((*close_iter)->edge1_,(*close_iter)->edge2_,(*close_iter)->weight_);
+        }
+        MST.Display();
+        MST.ToGraphviz();
+    } else {
+        cout << "Empty graph" << endl;
+    }
+    return MST;
+}
+
+Graph Graph::KruskalMST() {
+    Graph KMST;
+
+    return KMST;
 }

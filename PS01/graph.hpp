@@ -7,7 +7,13 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-
+class Vertex {
+    public:
+    std::string edge1_;
+    std::string edge2_;
+    int weight_;
+    Vertex(std::string,std::string,int);
+};
 class Edge {
 public:
     std::string name_;
@@ -31,6 +37,9 @@ public:
     bool IsBipartite();
     void Display();
     void ToGraphviz();
+    Graph PrimMST();
+    int GetNumberOfEdges();
+    Graph KruskalMST();
 };
 
 #endif /* graph_hpp */
