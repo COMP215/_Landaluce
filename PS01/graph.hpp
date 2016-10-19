@@ -37,9 +37,7 @@ public:
     bool IsBipartite();
     void Display();
     void ToGraphviz();
-    Graph PrimMST();
     int GetNumberOfEdges();
-    Graph KruskalMST();
 };
 
 #endif /* graph_hpp */
