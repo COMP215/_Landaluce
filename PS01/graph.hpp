@@ -12,6 +12,7 @@ class Vertex {
     std::string edge1_;
     std::string edge2_;
     int weight_;
+    Vertex();
     Vertex(std::string,std::string,int);
 };
 class Edge {
@@ -37,7 +38,9 @@ public:
     bool IsBipartite();
     void Display();
     void ToGraphviz();
+    Graph PrimMST();
     int GetNumberOfEdges();
+    Graph KruskalMST();
 };
 
 #endif /* graph_hpp */
